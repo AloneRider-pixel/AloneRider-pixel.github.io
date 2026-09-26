@@ -1,6 +1,6 @@
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlparse
+import re
 
 class SiteParser(HTMLParser):
     def __init__(self):
@@ -34,7 +34,8 @@ missing_ids = required_ids - parser.ids
 if missing_ids:
     raise SystemExit("Site validation failed: missing ids: " + ", ".join(sorted(missing_ids)))
 
-if not parser.title:
+title_match = re.search(r"<title[^>]*>\\s*(.*?)\\s*</title>", Path("index.html").read_text(encoding="utf-8"), re.I | re.S)
+if not title_match or not title_match.group(1).strip():
     raise SystemExit("Site validation failed: missing title")
 
 if len(parser.meta.get("description", "")) < 40:
