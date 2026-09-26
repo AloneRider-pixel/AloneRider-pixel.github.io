@@ -41,6 +41,19 @@ if not title_match or not title_match.group(1).strip():
 if len(parser.meta.get("description", "")) < 40:
     raise SystemExit("Site validation failed: meta description is missing or too short")
 
+html = Path("index.html").read_text(encoding="utf-8")
+for marker in (
+    '<meta property="og:title"',
+    '<meta property="og:description"',
+    '<link rel="canonical" href="https://himanshubisht.is-a.dev/"',
+    '"@type":"Person"',
+):
+    if marker not in html:
+        raise SystemExit(f"Site validation failed: missing trust/SEO marker {marker}")
+
+if "github.com/AloneRider-pixel/AloneRider-pixel.github.io/blob/main/docs/evidence-index.md" not in html:
+    raise SystemExit("Site validation failed: portfolio evidence index link missing")
+
 for href in parser.links:
     if href.startswith("#"):
         target = href[1:]
