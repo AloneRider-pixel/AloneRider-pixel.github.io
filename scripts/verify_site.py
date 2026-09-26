@@ -29,7 +29,7 @@ class SiteParser(HTMLParser):
 
 parser = SiteParser()
 parser.feed(Path("index.html").read_text(encoding="utf-8"))
-required_ids = {"top", "work", "experience", "stack", "contact", "year"}
+required_ids = {"top", "main-content", "work", "experience", "stack", "contact", "year"}
 missing_ids = required_ids - parser.ids
 if missing_ids:
     raise SystemExit("Site validation failed: missing ids: " + ", ".join(sorted(missing_ids)))
