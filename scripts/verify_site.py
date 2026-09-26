@@ -34,7 +34,7 @@ missing_ids = required_ids - parser.ids
 if missing_ids:
     raise SystemExit("Site validation failed: missing ids: " + ", ".join(sorted(missing_ids)))
 
-title_match = re.search(r"<title[^>]*>\\s*(.*?)\\s*</title>", Path("index.html").read_text(encoding="utf-8"), re.I | re.S)
+title_match = re.search(r"<title[^>]*>\s*(.*?)\s*</title>", Path("index.html").read_text(encoding="utf-8"), re.I | re.S)
 if not title_match or not title_match.group(1).strip():
     raise SystemExit("Site validation failed: missing title")
 
