@@ -20,3 +20,8 @@ Designed for GitHub Pages, but compatible with Vercel, Netlify, Cloudflare Pages
 
 - LinkedIn: https://www.linkedin.com/in/himanshu-bisht-ab6762203/
 - GitHub: https://github.com/AloneRider-pixel
+
+
+## Verification
+
+This portfolio is validated in CI for HTML structure, required navigation targets, JavaScript syntax, and workflow security. Project claims are intended to be traceable to the linked GitHub source, tests, evaluation artifacts, or explicit methodology; unsupported performance numbers are not used as portfolio proof.
