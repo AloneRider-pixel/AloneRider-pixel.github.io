@@ -25,3 +25,11 @@ Designed for GitHub Pages, but compatible with Vercel, Netlify, Cloudflare Pages
 ## Verification
 
 This portfolio is validated in CI for HTML structure, required navigation targets, JavaScript syntax, and workflow security. Project claims are intended to be traceable to the linked GitHub source, tests, evaluation artifacts, or explicit methodology; unsupported performance numbers are not used as portfolio proof.
+
+## Repository review path
+
+Treat `index.html`, `styles.css`, and `script.js` as the primary site surface. Run the configured site verification locally before merging, and use the GitHub Pages deployment workflow as the deployment gate.
+
+## Maintenance standard
+
+Keep project links relative where repository-local, keep accessibility/navigation checks intact, and ensure portfolio claims remain traceable to source repositories or reproducible evidence.
