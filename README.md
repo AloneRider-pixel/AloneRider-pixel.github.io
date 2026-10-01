@@ -1,10 +1,17 @@
 # Himanshu Bisht — Personal Portfolio
 
-Recruiter-first personal portfolio for Himanshu Bisht, focused on software engineering, backend systems, AI applications, data engineering, distributed systems, and cloud-native engineering.
+Recruiter-focused static portfolio covering software engineering, backend systems, AI applications, data engineering, distributed systems, and cloud-native engineering.
+
+## What the site presents
+
+- Selected engineering systems with source-repository links.
+- Backend, AI, data, distributed-systems, and cloud engineering focus areas.
+- Contact and professional profile links.
+- Project claims intended to remain traceable to repository evidence.
 
 ## Local development
 
-This is a static HTML/CSS/JavaScript site. Run any static server:
+The site is static HTML/CSS/JavaScript.
 
 ```bash
 python3 -m http.server 8080
@@ -12,24 +19,35 @@ python3 -m http.server 8080
 
 Open `http://localhost:8080`.
 
+## Validation
+
+Run the same checks used by Portfolio CI:
+
+```bash
+python scripts/verify_site.py
+node --check script.js
+```
+
+The verifier checks HTML/navigation requirements; JavaScript syntax is checked independently.
+
 ## Deployment
 
-Designed for GitHub Pages, but compatible with Vercel, Netlify, Cloudflare Pages, and other static hosting providers.
+The site is designed for GitHub Pages and can also be served by other static hosting providers.
 
-## Links
+Repository deployment is validated through the GitHub Pages workflow. Do not treat a successful static build as evidence that external links, third-party services, or production analytics are operational.
 
-- LinkedIn: https://www.linkedin.com/in/himanshu-bisht-ab6762203/
-- GitHub: https://github.com/AloneRider-pixel
+## Engineering hygiene
 
+- Keep repository-local links stable.
+- Preserve accessibility and navigation checks.
+- Keep JavaScript free of syntax errors.
+- Keep project claims tied to source repositories or reproducible evidence.
+- Do not add credentials or private configuration to the static bundle.
 
-## Verification
+## Review path
 
-This portfolio is validated in CI for HTML structure, required navigation targets, JavaScript syntax, and workflow security. Project claims are intended to be traceable to the linked GitHub source, tests, evaluation artifacts, or explicit methodology; unsupported performance numbers are not used as portfolio proof.
+Start with `index.html`, `styles.css`, `script.js`, and [verification](scripts/verify_site.py). Check project links when repository names or paths change.
 
-## Repository review path
+## License
 
-Treat `index.html`, `styles.css`, and `script.js` as the primary site surface. Run the configured site verification locally before merging, and use the GitHub Pages deployment workflow as the deployment gate.
-
-## Maintenance standard
-
-Keep project links relative where repository-local, keep accessibility/navigation checks intact, and ensure portfolio claims remain traceable to source repositories or reproducible evidence.
+MIT
