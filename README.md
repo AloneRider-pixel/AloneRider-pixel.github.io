@@ -1,19 +1,18 @@
-# Himanshu Bisht — Personal Portfolio
+# Himanshu Bisht — Engineering Portfolio
 
-Recruiter-focused static portfolio covering software engineering, backend systems, AI applications, data engineering, distributed systems, and cloud-native engineering.
+Recruiter-facing static portfolio for backend engineering, AI systems, data engineering, distributed systems, and cloud-native development.
 
-## What the site presents
+## Site scope
 
-- Selected engineering systems with source-repository links.
-- Backend, AI, data, distributed-systems, and cloud engineering focus areas.
-- Contact and professional profile links.
-- Project claims intended to remain traceable to repository evidence.
+The site presents selected projects, engineering focus areas, professional links, and repository-backed claims. Project descriptions are intended to remain traceable to the corresponding GitHub repositories.
 
 ## Local development
 
-The site is static HTML/CSS/JavaScript.
+The site is plain HTML/CSS/JavaScript.
 
 ```bash
+git clone https://github.com/AloneRider-pixel/AloneRider-pixel.github.io.git
+cd AloneRider-pixel.github.io
 python3 -m http.server 8080
 ```
 
@@ -21,32 +20,41 @@ Open `http://localhost:8080`.
 
 ## Validation
 
-Run the same checks used by Portfolio CI:
-
 ```bash
 python scripts/verify_site.py
 node --check script.js
 ```
 
-The verifier checks HTML/navigation requirements; JavaScript syntax is checked independently.
+Portfolio CI validates HTML/navigation requirements and JavaScript syntax. GitHub Pages deployment is also covered by the repository workflow.
 
-## Deployment
+## Repository structure
 
-The site is designed for GitHub Pages and can also be served by other static hosting providers.
-
-Repository deployment is validated through the GitHub Pages workflow. Do not treat a successful static build as evidence that external links, third-party services, or production analytics are operational.
+```text
+index.html
+styles.css
+script.js
+favicon.svg
+robots.txt
+sitemap.xml
+scripts/verify_site.py
+docs/
+.github/workflows/
+```
 
 ## Engineering hygiene
 
-- Keep repository-local links stable.
-- Preserve accessibility and navigation checks.
-- Keep JavaScript free of syntax errors.
-- Keep project claims tied to source repositories or reproducible evidence.
-- Do not add credentials or private configuration to the static bundle.
+- Keep project links aligned with current repository paths.
+- Preserve keyboard accessibility, navigation checks, and semantic structure.
+- Keep credentials and private configuration out of the static bundle.
+- Treat external links and third-party services as runtime dependencies, not CI guarantees.
 
-## Review path
+## Evidence standard
 
-Start with `index.html`, `styles.css`, `script.js`, and [verification](scripts/verify_site.py). Check project links when repository names or paths change.
+Portfolio claims should map to source repositories or reproducible evidence. Do not present deterministic fixtures, design targets, or synthetic validation results as production outcomes.
+
+## Documentation
+
+See [evidence index](docs/evidence-index.md) and [site verifier](scripts/verify_site.py).
 
 ## License
 
