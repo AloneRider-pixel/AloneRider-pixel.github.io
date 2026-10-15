@@ -157,3 +157,13 @@ h2 { margin: 0; font-size: clamp(34px, 4vw, 56px); line-height: 1.05; letter-spa
   .reveal { opacity: 1; transform: none; transition: none; }
   .button, .project-card { transition: none; }
 }
+
+
+/* Skip link: hidden until keyboard focus */
+.skip-link { position: absolute; left: 16px; top: -48px; z-index: 100; padding: 8px 14px; border-radius: 8px; background: #f3f6fa; color: #0a0d12; font-weight: 600; text-decoration: none; transition: top .15s ease; }
+.skip-link:focus { top: 12px; }
+
+/* Avoid an orphaned last card on wide screens */
+@media (min-width: 861px) {
+  .featured-grid .project-card:last-child:nth-child(even) { grid-column: span 2; min-height: 0; }
+}
