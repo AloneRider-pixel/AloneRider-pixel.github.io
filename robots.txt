@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://himanshubisht.is-a.dev/sitemap.xml
+Sitemap: https://alonerider-pixel.github.io/sitemap.xml
