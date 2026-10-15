@@ -45,7 +45,7 @@ html = Path("index.html").read_text(encoding="utf-8")
 for marker in (
     '<meta property="og:title"',
     '<meta property="og:description"',
-    '<link rel="canonical" href="https://himanshubisht.is-a.dev/"',
+    '<link rel="canonical" href="https://alonerider-pixel.github.io/"',
     '"@type":"Person"',
 ):
     if marker not in html:
@@ -58,7 +58,7 @@ html = Path("index.html").read_text(encoding="utf-8")
 for marker in (
     '<meta property="og:title"',
     '<meta property="og:description"',
-    '<link rel="canonical" href="https://himanshubisht.is-a.dev/"',
+    '<link rel="canonical" href="https://alonerider-pixel.github.io/"',
     '"@type":"Person"',
 ):
     if marker not in html:
