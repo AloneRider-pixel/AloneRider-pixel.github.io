@@ -24,6 +24,7 @@
     var el = document.getElementById('ascii');
     if (!el) return;
     var cols = Math.min(110, Math.floor((el.offsetWidth - 8) / 8.6));
+    if (cols < 40) { el.textContent = ''; return; }
     var rows = 14, grid = [];
     for (var r = 0; r < rows; r++) { grid.push(new Array(cols).fill(' ')); }
     function put(r, c, s) { for (var i = 0; i < s.length; i++) if (grid[r] && c + i >= 0 && c + i < cols) grid[r][c + i] = s[i]; }
@@ -46,7 +47,7 @@
     el.textContent = grid.map(function (row) { return row.join(''); }).join('\n');
   }
 
-  function init() { ascii(); gutter(); }
+  function init() { gutter(); ascii(); }
   window.addEventListener('load', init);
   var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(init, 150); });
 })();
