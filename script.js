@@ -23,25 +23,26 @@
   function ascii() {
     var el = document.getElementById('ascii');
     if (!el) return;
-    var cols = Math.min(150, Math.floor(el.offsetWidth / 7.3));
-    var rows = 13, grid = [];
+    var cols = Math.min(110, Math.floor((el.offsetWidth - 8) / 8.6));
+    var rows = 14, grid = [];
     for (var r = 0; r < rows; r++) { grid.push(new Array(cols).fill(' ')); }
-    function put(r, c, s) { for (var i = 0; i < s.length; i++) if (grid[r] && c + i < cols) grid[r][c + i] = s[i]; }
-    function hline(r, c1, c2, ch) { for (var c = c1; c < c2; c++) put(r, c, ch || '-'); }
+    function put(r, c, s) { for (var i = 0; i < s.length; i++) if (grid[r] && c + i >= 0 && c + i < cols) grid[r][c + i] = s[i]; }
+    function hline(r, c1, c2, ch) { for (var c = c1; c < c2; c++) put(r, c, ch); }
+    function vline(c, r1, r2, ch) { for (var r = r1; r < r2; r++) put(r, c, ch); }
     function box(r, c, w, label) {
-      hline(r, c, c + w, '-'); hline(r + 2, c, c + w, '-');
-      put(r + 1, c, '|'); put(r + 1, c + w - 1, '|');
-      put(r + 1, c + 2, label);
+      put(r, c, '+' + new Array(w - 1).join('-') + '+'); put(r + 2, c, '+' + new Array(w - 1).join('-') + '+');
+      put(r + 1, c, '|'); put(r + 1, c + w, '|'); put(r + 1, c + 2, label);
     }
-    for (var rr = 0; rr < rows; rr += 4) hline(rr, 0, cols, '-');
-    var step = Math.max(12, Math.floor(cols / 5)), labels = ['client', 'api', 'queue', 'worker', 'db'];
-    for (var k = 0; k < labels.length; k++) {
-      var c = k * step + 1; if (c + 11 > cols) break;
-      var r0 = 1 + (k % 2) * 5;
-      box(r0, c, 11, labels[k]);
-      if (k < labels.length - 1) { hline(r0 + 1, c + 11, c + step, '.'); put(r0 + 1, c + step - 1, '>'); }
-      
-    }
+    var w = 12, gap = Math.max(4, Math.floor((cols - 3 * w) / 2));
+    var xs = [0, w + gap, 2 * (w + gap)];
+    box(0, xs[0], w, 'client'); box(0, xs[1], w, 'api'); box(0, xs[2], w, 'queue');
+    box(8, xs[0], w, 'db'); box(8, xs[1], w, 'cache'); box(8, xs[2], w, 'worker');
+    hline(1, xs[0] + w + 1, xs[1], '='); put(1, xs[1] - 1, '>');
+    hline(1, xs[1] + w + 1, xs[2], '='); put(1, xs[2] - 1, '>');
+    vline(xs[2] + 6, 3, 8, ':'); put(7, xs[2] + 6, 'v');
+    hline(9, xs[1] + w + 1, xs[2], '='); put(9, xs[1] + w + 1, '<');
+    hline(9, xs[0] + w + 1, xs[1], '='); put(9, xs[0] + w + 1, '<');
+    put(12, 0, '# request in, retry on failure, result written back');
     el.textContent = grid.map(function (row) { return row.join(''); }).join('\n');
   }
 
