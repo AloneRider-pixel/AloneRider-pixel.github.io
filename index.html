@@ -1,81 +1,152 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Himanshu Bisht | Software Engineer</title>
-<meta name="description" content="Himanshu Bisht, software engineer building Python backends, AI applications and data workflows. Selected projects, experience and resume.">
-<meta name="theme-color" content="#1f1f1f"><link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Himanshu Bisht | Software Engineer"><meta property="og:description" content="Python backends. AI applications. Reliable data workflows. Selected work and resume."><meta property="og:type" content="website"><meta property="og:url" content="https://alonerider-pixel.github.io/"><link rel="canonical" href="https://alonerider-pixel.github.io/">
-<link rel="stylesheet" href="styles.css">
-<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Himanshu Bisht</title>
+<meta name="description" content="Himanshu Bisht - python backend engineer in Haldwani, India. Six registered builds in an interactive 3D orbit, with the full record and contact.">
+<meta property="og:title" content="Himanshu Bisht - Python Backend Engineer">
+<meta property="og:description" content="Six registered builds in an interactive 3D orbit. Every claim resolves to a public repo, doc or live demo.">
+<link rel="canonical" href="https://alonerider-pixel.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Himanshu Bisht","jobTitle":"Software Engineer","url":"https://alonerider-pixel.github.io/","sameAs":["https://github.com/AloneRider-pixel","https://www.linkedin.com/in/himanshu-bisht-ab6762203/"]}</script>
-</head>
-<body>
-<a class="skip" href="#main-content">Skip to content</a>
-<header class="bar"><div class="tab"><span class="dot"></span>himanshu_bisht.py</div>
-<nav aria-label="Main navigation"><a href="#work">work</a><a href="#experience">experience</a><a href="#stack">stack</a><a href="#contact">contact</a></nav>
-<div class="tools"><a class="pill" href="Himanshu_Bisht_Resume.pdf" download="Himanshu_Bisht_Resume.pdf">resume.pdf ↓</a><button id="theme" type="button" aria-label="Switch between dark and light theme">◐</button></div></header>
+<style>
+  :root{--bg:#0f0b08;--bg2:#141009;--ink:#f2ece3;--mid:#c9b9a8;--faint:#9c8f81;--accent:#ff5c34;--hair:rgba(201,185,168,.16)}
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:ui-monospace,'JetBrains Mono',Menlo,monospace}
+  /* hero */
+  header{position:relative;height:100svh;min-height:560px;overflow:hidden}
+  #scene{position:absolute;inset:0}
+  .p3d-stage{position:absolute;inset:0;border-radius:0;background:transparent}
+  .p3d-canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+  .p3d-hint{position:absolute;left:26px;bottom:24px;font:11px ui-monospace,Menlo,monospace;color:rgba(156,143,129,.85);letter-spacing:.06em;pointer-events:none}
+  .p3d-panel{display:none}
+  .p3d-hero{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:26px 34px 64px;transition:opacity .35s ease;color:var(--ink)}
+  .p3d-focused .p3d-hero{opacity:.12}
+  .p3d-hero-nav{display:flex;justify-content:space-between;font:10px ui-monospace,Menlo,monospace;letter-spacing:.2em;color:rgba(201,185,168,.85);text-transform:uppercase}
+  .p3d-hero-mark{color:var(--accent)}
+  .p3d-hero-name{font-family:'Iowan Old Style',Palatino,'Palatino Linotype',Georgia,serif;font-size:clamp(44px,8.5vw,110px);line-height:1;letter-spacing:-0.015em}
+  .p3d-hero-tag{margin-top:14px;max-width:44%;font:12px ui-monospace,Menlo,monospace;letter-spacing:.1em;color:rgba(201,185,168,.95)}
+  .p3d-hero-meta{font:10px ui-monospace,Menlo,monospace;letter-spacing:.14em;color:rgba(156,143,129,.95)}
+  @media (max-width:640px){
+    .p3d-hero{padding:22px 22px 58px}
+    .p3d-hero-mid{position:absolute;top:64px;left:22px;right:22px;max-width:82%;background:linear-gradient(90deg,rgba(15,11,8,.82),rgba(15,11,8,.4) 70%,transparent);margin-left:-22px;margin-right:-22px;padding:6px 22px;border-radius:6px}
+    .p3d-hero-name{font-size:44px}
+    .p3d-hero-tag{max-width:80%}
+    .p3d-hero-meta{position:absolute;bottom:14px;left:22px;right:22px}
+    .p3d-hint{bottom:52px;left:22px}
+  }
+  /* sections */
+  section{max-width:1040px;margin:0 auto;padding:96px 24px 24px}
+  .kicker{font:10px ui-monospace,Menlo,monospace;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+  h2{font-family:'Iowan Old Style',Palatino,Georgia,serif;font-weight:500;font-size:clamp(26px,4vw,40px);margin:10px 0 8px}
+  .sub{color:var(--faint);font-size:14px;max-width:560px;line-height:1.6}
+  .row{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:26px 0;border-top:1px solid var(--hair)}
+  .row:last-child{border-bottom:1px solid var(--hair)}
+  .num{font:600 12px ui-monospace,Menlo,monospace;color:var(--accent);padding-top:5px}
+  .row h3{font-family:'Iowan Old Style',Palatino,Georgia,serif;font-weight:500;font-size:24px;margin-bottom:4px}
+  .row h3 a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+  .row h3 a:hover{border-color:var(--accent)}
+  .role{font:9.5px ui-monospace,Menlo,monospace;letter-spacing:.18em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+  .desc{color:var(--mid);font-size:14px;line-height:1.65;max-width:640px}
+  .stack{font:11px ui-monospace,Menlo,monospace;color:var(--faint);margin-top:12px}
+  .note{font:11px ui-monospace,Menlo,monospace;color:var(--faint);border-left:2px solid var(--accent);padding-left:10px;margin-top:10px;max-width:560px;line-height:1.6}
+  .links{font:11px ui-monospace,Menlo,monospace;margin-top:12px}
+  .links a{color:var(--accent);text-decoration:none}
+  /* record */
+  .rec{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:20px 0;border-top:1px solid var(--hair)}
+  .rec:last-child{border-bottom:1px solid var(--hair)}
+  .per{font:11px ui-monospace,Menlo,monospace;color:var(--faint);padding-top:3px}
+  .rec b{font-weight:600;font-size:15px}
+  .rec span{color:var(--faint);font-size:13px}
+  .rec p{color:var(--mid);font-size:13.5px;line-height:1.6;margin-top:6px;max-width:620px}
+  /* contact */
+  .clink{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-top:1px solid var(--hair);text-decoration:none}
+  .clink:last-of-type{border-bottom:1px solid var(--hair)}
+  .clink .k{font:10px ui-monospace,Menlo,monospace;letter-spacing:.18em;color:var(--faint);text-transform:uppercase}
+  .clink .v{font:13px ui-monospace,Menlo,monospace;color:var(--ink)}
+  .clink:hover .v{color:var(--accent)}
+  footer{max-width:1040px;margin:60px auto 0;padding:26px 24px 40px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;font:10px ui-monospace,Menlo,monospace;letter-spacing:.14em;color:var(--faint)}
+.snap header{height:780px;min-height:0}
+</style></head>
+<body id="top">
+<header>
+  <div id="scene"></div>
+</header>
 
-<div class="editor"><div class="gutter" id="gutter" aria-hidden="true"></div>
 <main id="main-content">
-
-<section class="hero" id="top"><pre class="ascii" id="ascii" aria-hidden="true"></pre>
-<p class="comment"># software engineer · open to work · open to relocate</p>
-<h1><span>Himanshu</span><span>Bisht</span></h1>
-<p class="lede">Python backend, GenAI and LLM applications. I build services that handle the request that succeeds and the one that fails.</p>
-<div class="cta"><a class="btn solid" href="#work">See the work ↓</a><a class="btn" href="Himanshu_Bisht_Resume.pdf" download="Himanshu_Bisht_Resume.pdf">Download resume ↙</a><a class="btn ghost" href="https://github.com/AloneRider-pixel" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="btn ghost" href="https://www.linkedin.com/in/himanshu-bisht-ab6762203/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div>
-<p class="meta">Haldwani, India · B.Tech CSE, Graphic Era Hill University, 2025</p></section>
-
-<section class="block" id="work"><p class="comment"># 01 / selected work</p><h2>Projects.</h2>
-
-<article class="proj" id="stocksense"><div class="num">01</div><div class="body"><h3>StockSense AI</h3><p class="kicker">Market-analysis product · built with friends · my role: founder and backend engineer</p>
-<p>Authenticated APIs, a React frontend and asynchronous data processing for NSE and US stocks. Each next-day close prediction is stored and later scored against the actual close.</p>
-<ul><li>FastAPI, PostgreSQL, Redis caching and ARQ workers keep background processing apart from API requests.</li><li>Walk-forward evaluation and prediction-versus-actual reconciliation keep time-series work leakage-aware.</li><li>Pytest and GitHub Actions with CodeQL run on every change.</li></ul>
-<p class="tags">Python · FastAPI · PostgreSQL · Redis · ARQ · React</p>
-<p class="links"><a href="https://github.com/AloneRider-pixel/stocksense-ai" target="_blank" rel="noopener noreferrer">repo ↗</a><a href="https://stocksense-ai-demo.onrender.com/" target="_blank" rel="noopener noreferrer">live demo ↗</a></p></div></article>
-
-<article class="proj" id="enterprise"><div class="num">02</div><div class="body"><h3>Enterprise AI Support Agent</h3><p class="kicker">Reference implementation · runs locally, not publicly deployed</p>
-<p>A FastAPI and React support agent that answers from ingested documents, with citations.</p>
-<ul><li>Document chunking, embeddings in pgvector, hybrid vector and full-text retrieval with reranking.</li><li>LangGraph workflow with bounded tool calls.</li><li>JWT auth with role checks, rate limiting, a prompt-injection guard, and an evaluation module for faithfulness, relevance and context recall and precision.</li></ul>
-<p class="tags">Python · FastAPI · LangGraph · RAG · pgvector · React</p>
-<p class="links"><a href="https://github.com/AloneRider-pixel/enterprise-ai-agent" target="_blank" rel="noopener noreferrer">repo ↗</a></p></div></article>
-
-<article class="proj" id="aegis"><div class="num">03</div><div class="body"><h3>Aegis</h3><p class="kicker">Prototype · evaluated on synthetic demo data</p>
-<p>An incident-response platform where a LangGraph agent investigates simulated production incidents.</p>
-<ul><li>Bounded workflow over simulated metrics, logs, traces and deployments.</li><li>Impactful remediation sits behind explicit human approval, with an audit log, JWT auth and role-based access.</li><li>Knowledge search is a SQL keyword baseline today; semantic retrieval is planned, not shipped.</li></ul>
-<p class="tags">Python · FastAPI · LangGraph · PostgreSQL · Redis · React</p>
-<p class="links"><a href="https://github.com/AloneRider-pixel/aegis" target="_blank" rel="noopener noreferrer">repo ↗</a></p></div></article>
-
-<p class="comment more"># more, smaller</p>
-<div class="grid">
-<a href="https://github.com/AloneRider-pixel/cloud-data-platform" target="_blank" rel="noopener noreferrer"><b>Cloud Data Platform ↗</b><span>Python ingestion with pagination, rate limiting, retries and watermarks, plus Airflow, dbt and data-quality checks over PostgreSQL.</span></a>
-<a href="https://github.com/AloneRider-pixel/event-driven-platform" target="_blank" rel="noopener noreferrer"><b>Event-Driven Platform ↗</b><span>Kafka order processing with idempotent consumers, a transactional outbox, retries, dead-letter handling and compensation paths.</span></a>
-<a href="https://github.com/AloneRider-pixel/ai-quality-platform" target="_blank" rel="noopener noreferrer"><b>AI Quality Platform ↗</b><span>API, integration, contract and deterministic LLM-quality tests with Locust performance scenarios.</span></a>
-<a href="https://github.com/AloneRider-pixel/ride-hailing-backend" target="_blank" rel="noopener noreferrer"><b>Ride-Hailing Backend ↗</b><span>Booking, driver matching, tiered fares and coupons. In-memory storage and process-local locking limits are documented.</span></a>
-</div>
-<p class="note">Claims link back to code. <a href="https://github.com/AloneRider-pixel/AloneRider-pixel.github.io/blob/main/docs/evidence-index.md" target="_blank" rel="noopener noreferrer">Evidence index ↗</a></p>
+<section id="builds">
+  <div class="kicker">01 · builds</div>
+  <h2>Six registered builds.</h2>
+  <p class="sub">Every claim resolves to a public repo, doc or live demo. Tap a solid above or read the register.</p>
+  <div id="rows"></div>
 </section>
 
-<section class="block" id="experience"><p class="comment"># 02 / experience</p><h2>Experience.</h2>
-<div class="row"><div class="when">Dec 2025 - Aug 2026<br><span>Remote</span></div><div><h3>StockSense AI</h3><p class="role">Founder &amp; Backend Engineer</p><p>Backend engineer on a full-stack market-analysis product built with friends: FastAPI services, market-data ingestion, asynchronous workflows, testing, and CI.</p></div></div>
-<div class="row"><div class="when">Jun 2024 - Dec 2024<br><span>Remote</span></div><div><h3>Kyndryl</h3><p class="role">Software Engineer Intern</p><p>Automated regression test cases in Python with Pytest. Reproduced defects with logs and SQL, added regression coverage, and validated fixes with engineering and QA teams.</p></div></div>
-<div class="row"><div class="when">Oct 2021 - Jun 2025<br><span>Bhimtal</span></div><div><h3>Graphic Era Hill University</h3><p class="role">B.Tech, Computer Science &amp; Engineering</p></div></div>
+<section id="record">
+  <div class="kicker">02 · record</div>
+  <h2>Service record.</h2>
+  <div class="rec"><div class="per">2025.12 - 2026.08</div><div><b>Founder &amp; Backend Engineer</b> <span>· stocksense ai · built with friends</span><p>Market-analysis application in Python, FastAPI, PostgreSQL and Redis: backend development, market-data workflows, model evaluation, testing and CI/CD.</p></div></div>
+  <div class="rec"><div class="per">2024.06 - 2024.12</div><div><b>Software Engineer Intern</b> <span>· kyndryl</span><p>Python/PyTest automation, regression testing and production-issue investigation, contributing to software quality and reliability improvements.</p></div></div>
+  <div class="rec"><div class="per">2021.10 - 2025.06</div><div><b>B.Tech, Computer Science &amp; Engineering</b> <span>· graphic era hill university</span><p>Certifications passed: AWS Certified Cloud Practitioner and Microsoft Azure Fundamentals.</p></div></div>
 </section>
 
-<section class="block" id="stack"><p class="comment"># 03 / stack</p><h2>Stack.</h2>
-<pre class="code" tabindex="0"><span class="k">skills</span> = {
-  <span class="s">"languages"</span>: [<span class="v">"Python"</span>, <span class="v">"Java"</span>, <span class="v">"SQL"</span>, <span class="v">"JavaScript"</span>, <span class="v">"C"</span>, <span class="v">"C++"</span>],
-  <span class="s">"backend"</span>:   [<span class="v">"FastAPI"</span>, <span class="v">"REST APIs"</span>, <span class="v">"JWT auth"</span>, <span class="v">"ARQ workers"</span>, <span class="v">"React"</span>],
-  <span class="s">"data"</span>:      [<span class="v">"PostgreSQL"</span>, <span class="v">"pgvector"</span>, <span class="v">"Redis"</span>, <span class="v">"Airflow"</span>, <span class="v">"Pandas"</span>, <span class="v">"scikit-learn"</span>],
-  <span class="s">"genai"</span>:     [<span class="v">"LangGraph"</span>, <span class="v">"RAG"</span>, <span class="v">"LLM APIs"</span>, <span class="v">"AI agent workflows"</span>],
-  <span class="s">"quality"</span>:   [<span class="v">"Pytest"</span>, <span class="v">"GitHub Actions"</span>, <span class="v">"CI/CD"</span>, <span class="v">"CodeQL"</span>, <span class="v">"Git"</span>],
-}</pre>
-<p class="certs"><span>AWS Certified Cloud Practitioner</span><span>Microsoft Azure Fundamentals</span><span>Postman API Fundamentals</span><span>Databricks Generative AI Fundamentals</span><span>Oracle Agentic AI Foundations Associate</span></p></section>
+<section id="contact">
+  <div class="kicker">03 · correspondence</div>
+  <h2>Let's work together.</h2>
+  <p class="sub">Open to work and open to relocation. Fastest route is LinkedIn.</p>
+  <a class="clink" href="Himanshu_Bisht_Resume.pdf" download="Himanshu_Bisht_Resume.pdf"><span class="k">resume</span><span class="v">download pdf &#8595;</span></a>
+  <a class="clink" href="mailto:bihimanshu21@gmail.com"><span class="k">mail</span><span class="v">bihimanshu21@gmail.com</span></a>
+  <a class="clink" href="tel:+918630052660"><span class="k">phone</span><span class="v">+91 86300 52660</span></a>
+  <a class="clink" href="https://www.linkedin.com/in/himanshu-bisht-ab6762203"><span class="k">linkedin</span><span class="v">in/himanshu-bisht-ab6762203</span></a>
+  <a class="clink" href="https://github.com/AloneRider-pixel"><span class="k">github</span><span class="v">@AloneRider-pixel</span></a>
+</section>
+</main>
 
-<section class="block contact" id="contact"><p class="comment"># 04 / contact</p><h2>Let's work together</h2>
-<p><a class="big" href="mailto:bihimanshu21@gmail.com">bihimanshu21@gmail.com ↗</a></p><p><a href="tel:+918630052660">+91 86300 52660</a></p>
-<div class="cta"><a class="btn solid" href="Himanshu_Bisht_Resume.pdf" download="Himanshu_Bisht_Resume.pdf">Download resume ↙</a><a class="btn" href="https://github.com/AloneRider-pixel" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="btn" href="https://www.linkedin.com/in/himanshu-bisht-ab6762203/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
-</main></div>
-<footer><p>© <span id="year">2026</span> Himanshu Bisht</p><a href="#top">back to top ↑</a></footer>
-<script src="script.js"></script>
+<footer><span>© <span id="year">2026</span> himanshu bisht</span><span><a href="https://github.com/AloneRider-pixel/AloneRider-pixel.github.io/blob/main/docs/evidence-index.md" style="color:inherit">evidence index</a> · haldwani, in · open to relocation</span></footer>
+
+<script type="module">
+import { mountScene } from './scene.mjs';
+const projects = [
+  { num:'01', name:'Aegis', role:'AI PRODUCTION RELIABILITY & INCIDENT RESPONSE', shape:'tetra', orbit:{r:150,speed:0.00021,phase:0.4,tilt:0.5,y:-40},
+    desc:'Investigates simulated production incidents using telemetry, runbooks, deployments and historical context through an evidence-driven LangGraph workflow, with approval-gated remediation.',
+    stack:'Python · FastAPI · LangGraph · PostgreSQL · OpenTelemetry', meta:'prototype · public repo',
+    note:'runs on synthetic demo incidents; described as a prototype, not a production deployment.', url:'https://github.com/AloneRider-pixel/aegis' },
+  { num:'02', name:'StockSense AI', role:'MARKET DATA & PREDICTION EVALUATION', shape:'octa', orbit:{r:210,speed:0.00016,phase:2.2,tilt:-0.35,y:30},
+    desc:'FastAPI services with PostgreSQL, Redis caching and ARQ workers for the NIFTY 50 universe, metals and INR pairs: market-data ingestion, prediction workflows and prediction-vs-actual reconciliation against real closes.',
+    stack:'Python · FastAPI · PostgreSQL · Redis · ARQ · Pytest', meta:'product build · built with friends · live demo',
+    note:'the demo serves real delayed daily data (Yahoo Finance); the deployed instance is a demo, not a production deployment.', url:'https://github.com/AloneRider-pixel/stocksense-ai' },
+  { num:'03', name:'Cloud Data Platform', role:'END-TO-END ETL / ELT PLATFORM', shape:'cube', orbit:{r:270,speed:0.00012,phase:4.0,tilt:0.3,y:70},
+    desc:'Ingestion, orchestration, dbt transformations, warehouse modeling, data quality checks, observability and analytics in one end-to-end flow.',
+    stack:'Python · SQL · Airflow · dbt · AWS S3 · MinIO', meta:'reference implementation · public repo',
+    note:'design targets stay in the README; no volume or success-rate metrics are claimed.', url:'https://github.com/AloneRider-pixel/cloud-data-platform' },
+  { num:'04', name:'Event-Driven Platform', role:'DISTRIBUTED ORDER PROCESSING', shape:'prism', orbit:{r:230,speed:0.00019,phase:5.3,tilt:-0.5,y:-80},
+    desc:'Microservices connected through Kafka with idempotency, retries, dead-letter queues, saga-style workflows, Redis and PostgreSQL.',
+    stack:'FastAPI · Kafka · Redis · PostgreSQL', meta:'reference implementation · public repo',
+    note:'failure paths (retries, DLQ, idempotency) are the point of the build.', url:'https://github.com/AloneRider-pixel/event-driven-platform' },
+  { num:'05', name:'AI Quality Platform', role:'API AUTOMATION + LLM EVALUATION', shape:'bipyramid', orbit:{r:180,speed:0.00024,phase:3.1,tilt:0.15,y:90},
+    desc:'Reusable test infrastructure for API, integration, contract and deterministic LLM-quality validation, with CI/CD reporting.',
+    stack:'PyTest · HTTPX · Schemathesis · contract testing', meta:'reference implementation · public repo',
+    note:'deterministic checks only; no accuracy claims without an eval set.', url:'https://github.com/AloneRider-pixel/ai-quality-platform' },
+  { num:'06', name:'Ride-Hailing Backend', role:'BOOKING, MATCHING & FARE CALCULATION', shape:'pyramid', orbit:{r:300,speed:0.0001,phase:1.2,tilt:0.4,y:0},
+    desc:'FastAPI service for booking and ride lifecycle flows, configurable driver matching, tiered fare calculation, coupons, cancellation policy and explicit concurrency limits.',
+    stack:'Python · FastAPI · API design · pricing · Pytest', meta:'reference implementation · public repo',
+    note:'in-memory storage and process-local locking are documented boundaries in the README.', url:'https://github.com/AloneRider-pixel/ride-hailing-backend' },
+];
+const hero = { mark:'H.BISHT', nav:'builds · record · contact', name:'Himanshu Bisht',
+  tagline:'python backend engineer - dependable systems, agentic ai, data platforms',
+  meta:'06 builds · 02 certifications · haldwani, in · open to work' };
+const params = new URLSearchParams(location.search);
+if (params.has('snap')) document.documentElement.classList.add('snap');
+mountScene(document.getElementById('scene'), projects, { hero, initialFocus: params.has('focus') ? Number(params.get('focus')) : undefined });
+document.getElementById('rows').innerHTML = projects.map(p => `
+  <div class="row">
+    <div class="num">${p.num}</div>
+    <div>
+      <h3><a href="${p.url}">${p.name}</a></h3>
+      <div class="role">${p.role}</div>
+      <p class="desc">${p.desc}</p>
+      <div class="stack">${p.stack} · ${p.meta}</div>
+      <div class="note">${p.note}</div>
+      <div class="links"><a href="${p.url}">repo</a></div>
+    </div>
+  </div>`).join('');
+</script>
 </body></html>
