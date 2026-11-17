@@ -15,7 +15,7 @@ The site presents selected engineering work and links each project back to its s
 |---|---|
 | [Aegis](https://github.com/AloneRider-pixel/aegis) | AI incident response, RAG, controlled remediation |
 | [StockSense AI](https://github.com/AloneRider-pixel/stocksense-ai) | Chronological ML evaluation and market intelligence |
-| [Cloud Data Platform](https://github.com/AloneRider-pixel/cloud-data-platform) | Ingestion, Airflow, dbt, data quality |
+| [Cloud Data Platform](https://github.com/AloneRider-pixel/cloud-data-platform) | Batch data ingestion, warehouse modeling, data validation and analytics |
 | [ForgeAI](https://github.com/AloneRider-pixel/forgeai) | PR risk analysis and governance |
 | [Event-Driven Platform](https://github.com/AloneRider-pixel/event-driven-platform) | Kafka, outbox, idempotency, failure handling |
 | [CareerOS](https://github.com/AloneRider-pixel/Ai-job-search) | Evidence-backed job search and outcome learning |
