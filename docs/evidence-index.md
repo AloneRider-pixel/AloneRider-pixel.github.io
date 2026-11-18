@@ -11,7 +11,6 @@ This site is a navigation layer over the underlying engineering repositories.
 | AI Quality Platform | https://github.com/AloneRider-pixel/ai-quality-platform/blob/main/docs/evidence-policy.md |
 | CityLens | https://github.com/AloneRider-pixel/Citylens/blob/main/docs/verification.md |
 | StockSense AI | https://github.com/AloneRider-pixel/stocksense-ai/blob/main/docs/model-evaluation.md |
-| Cloud Native Platform | https://github.com/AloneRider-pixel/cloud-native-platform/tree/main/kubernetes |
 
 ## Evidence rule
 
