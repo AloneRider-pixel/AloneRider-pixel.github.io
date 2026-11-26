@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Break my backend · Himanshu Bisht</title>
+<meta name="description" content="An interactive lab: send requests to recordings of a real FastAPI ride-hailing backend, cause failures and read the code and tests behind each answer.">
+<link rel="icon" href="https://alonerider-pixel.github.io/favicon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#0d0f12;--panel:#14181d;--line:#232a32;--ink:#e8ecf0;--mid:#9aa6b2;--faint:#667380;--ok:#4ade80;--bad:#fb7185;--warn:#fbbf24;--acc:#7dd3fc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--acc)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font:12px ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mid)}
+nav b{color:var(--ink)}nav a{color:var(--mid);text-decoration:none;margin-left:20px}nav a:hover{color:var(--ink)}
+h1{font:600 clamp(34px,6vw,68px)/1.02 'Iowan Old Style',Palatino,Georgia,serif;letter-spacing:-.02em;margin:46px 0 14px}
+h1 i{color:var(--bad);font-style:italic;font-weight:500}
+.lede{color:var(--mid);max-width:640px;font-size:17px}
+.prov{display:inline-flex;gap:8px;align-items:center;margin-top:22px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;font:12px ui-monospace,Menlo,monospace;color:var(--mid);background:var(--panel)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--warn)}
+.lab{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;margin-top:34px}
+.ctrl{display:flex;flex-direction:column;gap:10px}
+.ctrl h2,.ttl{font:11px ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.sc{background:var(--panel);border:1px solid var(--line);color:var(--ink);text-align:left;padding:13px 14px;border-radius:12px;cursor:pointer;font:inherit;transition:.15s}
+.sc:hover{border-color:var(--acc)}
+.sc.on{border-color:var(--acc);background:#12202a}
+.sc b{display:block;font-size:15px}.sc span{font-size:12.5px;color:var(--mid)}
+.sc.danger b::before{content:"⚠ ";color:var(--warn)}
+.term{background:#0a0c0f;border:1px solid var(--line);border-radius:14px;min-height:420px;display:flex;flex-direction:column}
+.bar{display:flex;gap:6px;padding:12px 14px;border-bottom:1px solid var(--line);align-items:center}
+.bar i{width:10px;height:10px;border-radius:50%;background:#2a323b}.bar span{margin-left:10px;font:11.5px ui-monospace,Menlo,monospace;color:var(--faint)}
+#out{padding:16px;font:13px/1.65 ui-monospace,Menlo,Consolas,monospace;overflow:auto;flex:1}
+.ln{margin-bottom:12px;animation:in .25s ease both}
+@keyframes in{from{opacity:0;transform:translateY(4px)}}
+.req{color:var(--acc);word-break:break-all}.res{margin-top:2px}.s2{color:var(--ok)}.s4{color:var(--bad)}.note{color:var(--faint)}
+pre{white-space:pre-wrap;word-break:break-word;color:var(--mid);font:inherit}
+.empty{color:var(--faint)}
+.why{margin-top:20px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card p{color:var(--mid);font-size:15px}
+.tests{list-style:none;margin-top:8px}
+.tests li{font:12.5px ui-monospace,Menlo,monospace;color:var(--mid);padding:3px 0}
+.tests li::before{content:"✓ ";color:var(--ok)}
+.src a{font:12.5px ui-monospace,Menlo,monospace}
+.race{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.rd{width:30px;height:30px;border-radius:50%;background:#1d252d;border:1px solid var(--line);display:grid;place-items:center;font:11px ui-monospace,Menlo,monospace;color:var(--mid);transition:.4s}
+.rd.win{background:#0f2a1a;border-color:var(--ok);color:var(--ok)}.rd.lose{background:#2a1218;border-color:var(--bad);color:var(--bad)}
+.fare{margin-top:20px}
+.fare .row{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:10px}
+input[type=range]{flex:1;min-width:200px;accent-color:var(--acc)}
+.seg button{background:var(--bg);color:var(--mid);border:1px solid var(--line);padding:7px 14px;font:12px ui-monospace,Menlo,monospace;cursor:pointer}
+.seg button:first-child{border-radius:8px 0 0 8px}.seg button:last-child{border-radius:0 8px 8px 0;border-left:0}
+.seg button.on{color:var(--ink);border-color:var(--acc)}
+.big{font:600 34px 'Iowan Old Style',Georgia,serif}
+.limits{margin-top:20px}
+.limits li{margin:6px 0 0 18px;color:var(--mid);font-size:14.5px}
+footer{margin:46px 0 40px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px 24px;font:12px ui-monospace,Menlo,monospace;color:var(--faint)}
+footer a{color:var(--mid)}
+.cta a{display:inline-block;margin:14px 10px 0 0;padding:10px 16px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font:12.5px ui-monospace,Menlo,monospace}
+.cta a.p{background:var(--ink);color:var(--bg)}
+@media(max-width:860px){.lab,.why{grid-template-columns:1fr}.ctrl{flex-direction:row;flex-wrap:wrap}.ctrl h2{flex:1 0 100%}.sc{flex:1 1 44%}}
+@media(prefers-reduced-motion:reduce){.ln{animation:none}.rd{transition:none}}
+</style></head><body>
+<div class="wrap">
+<nav><b>H.BISHT / backend lab</b><div><a href="https://alonerider-pixel.github.io/Himanshu_Bisht_Resume.pdf">resume</a><a href="https://github.com/AloneRider-pixel">github</a><a href="#contact">contact</a></div></nav>
+
+<h1>Don't read about my backend. <i>Try to break it.</i></h1>
+<p class="lede">Pick a request below, or cause a failure. You see the real request and response, the code that decides it, and the tests that guard it. The backend is my Python/FastAPI ride-hailing service.</p>
+<div class="prov"><span class="dot"></span><span id="prov"></span></div>
+
+<div class="lab">
+  <div class="ctrl" id="ctrl"><h2>send a request</h2></div>
+  <div class="term"><div class="bar"><i></i><i></i><i></i><span id="tt">replay of recorded runs</span></div><div id="out"><div class="empty">← choose a scenario. Responses below are real, recorded from the running service.</div></div></div>
+</div>
+
+<div class="why" id="why" hidden>
+  <div class="card"><div class="ttl">what just happened</div><p id="claim"></p><div class="race" id="race"></div><div id="racenote" class="note mono" style="font-size:12.5px;color:var(--faint)"></div></div>
+  <div class="card"><div class="ttl">code and tests behind it</div><div class="src" id="src"></div><ul class="tests" id="tests"></ul></div>
+</div>
+
+<div class="card fare">
+  <div class="ttl">fare calculator</div>
+  <p>Drag the distance. Each value is the output of the project's real pricing function, tabulated at 0.5 km steps. Not a formula re-typed for this page.</p>
+  <div class="row"><div class="seg" id="seg"><button data-v="sedan" class="on">sedan</button><button data-v="hatchback">hatchback</button></div>
+  <input id="km" type="range" min="0.5" max="30" step="0.5" value="8"><div class="mono" id="kml">8.0 km</div><div class="big" id="fv"></div></div>
+</div>
+
+<div class="card limits"><div class="ttl">honest limits</div>
+<ul class="limits">
+<li>Everything above is a recording of the real service, replayed in your browser. There is no live server behind this page.</li>
+<li>The service uses in-memory storage and process-local locking, so it is a reference implementation, not a production deployment. The README says so too.</li>
+<li>The race result comes from real threads, repeated five times. It shows the locking works on one process. It says nothing about a multi-server setup.</li>
+</ul></div>
+
+<div class="card" id="contact" style="margin-top:20px"><div class="ttl">contact</div>
+<p>I'm a Python backend engineer. Open to work and to relocation.</p>
+<div class="cta"><a class="p" href="https://alonerider-pixel.github.io/Himanshu_Bisht_Resume.pdf" download>Resume (PDF)</a><a href="https://www.linkedin.com/in/himanshu-bisht-ab6762203">LinkedIn</a><a href="mailto:bihimanshu21@gmail.com">bihimanshu21@gmail.com</a><a href="tel:+918630052660">+91 86300 52660</a><a href="https://github.com/AloneRider-pixel/ride-hailing-backend">Read the code</a></div></div>
+
+<footer><span>© 2026 himanshu bisht</span><a href="https://alonerider-pixel.github.io/">main portfolio</a><a href="https://github.com/AloneRider-pixel/AloneRider-pixel.github.io/blob/main/docs/evidence-index.md">evidence index</a></footer>
+</div>
+<script>
+const D={
+ "scenarios": [
+  {
+   "id": "happy",
+   "title": "Book and finish a ride",
+   "claim": "Nearest available driver is matched. An 8 km sedan ride costs 59.00 INR (tiered fare). The driver returns to available.",
+   "steps": [
+    {
+     "method": "POST",
+     "path": "/users",
+     "request": {
+      "name": "Asha"
+     },
+     "status": 201,
+     "response": {
+      "id": "7e57395f-ab49-4079-bf3b-5378a6c01f43",
+      "name": "Asha",
+      "created_at": "2026-11-26T16:19:12.661658Z"
+     },
+     "note": "register rider"
+    },
+    {
+     "method": "POST",
+     "path": "/drivers",
+     "request": {
+      "name": "Near driver",
+      "vehicle_type": "sedan",
+      "latitude": 12.972,
+      "longitude": 77.595
+     },
+     "status": 201,
+     "response": {
+      "id": "cf661612-212b-4704-9fb3-6ad2187a0f1e",
+      "name": "Near driver",
+      "vehicle_type": "sedan",
+      "latitude": 12.972,
+      "longitude": 77.595,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.664290Z"
+     },
+     "note": "driver 0.06 km away"
+    },
+    {
+     "method": "POST",
+     "path": "/drivers",
+     "request": {
+      "name": "Farther driver",
+      "vehicle_type": "sedan",
+      "latitude": 12.99,
+      "longitude": 77.61
+     },
+     "status": 201,
+     "response": {
+      "id": "c60e6fca-0343-40e1-8dce-8d6222390fdf",
+      "name": "Farther driver",
+      "vehicle_type": "sedan",
+      "latitude": 12.99,
+      "longitude": 77.61,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.666281Z"
+     },
+     "note": "driver about 2.5 km away"
+    },
+    {
+     "method": "POST",
+     "path": "/rides",
+     "request": {
+      "user_id": "7e57395f-ab49-4079-bf3b-5378a6c01f43",
+      "requested_vehicle_type": "sedan",
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "radius_km": 5
+     },
+     "status": 201,
+     "response": {
+      "id": "8e30196a-5307-42ce-b1b4-58f85deceb2b",
+      "user_id": "7e57395f-ab49-4079-bf3b-5378a6c01f43",
+      "driver_id": "cf661612-212b-4704-9fb3-6ad2187a0f1e",
+      "requested_vehicle_type": "sedan",
+      "assigned_vehicle_type": "sedan",
+      "pricing_vehicle_type": "sedan",
+      "upgraded_at_no_extra_cost": false,
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "status": "ongoing",
+      "coupon_code": null,
+      "surge_multiplier": 1.0,
+      "created_at": "2026-11-26T16:19:12.668564Z",
+      "started_at": "2026-11-26T16:19:12.668564Z",
+      "ended_at": null,
+      "cancelled_at": null,
+      "distance_km": null,
+      "base_fare": null,
+      "surge_amount": 0.0,
+      "surged_fare": null,
+      "discount_amount": null,
+      "final_fare": null,
+      "cancellation_fee": 0.0
+     },
+     "note": "book: nearest-driver matching"
+    },
+    {
+     "method": "POST",
+     "path": "/rides/8e30196a-5307-42ce-b1b4-58f85deceb2b/end",
+     "request": {
+      "distance_km": 8
+     },
+     "status": 200,
+     "response": {
+      "ride_id": "8e30196a-5307-42ce-b1b4-58f85deceb2b",
+      "distance_km": 8.0,
+      "vehicle_type_priced": "sedan",
+      "base_fare": 59.0,
+      "surge_multiplier": 1.0,
+      "surge_amount": 0.0,
+      "surged_fare": 59.0,
+      "coupon_code": null,
+      "discount_amount": 0.0,
+      "final_fare": 59.0,
+      "currency": "INR"
+     },
+     "note": "end ride at 8 km: tiered fare"
+    },
+    {
+     "method": "GET",
+     "path": "/drivers/cf661612-212b-4704-9fb3-6ad2187a0f1e",
+     "request": null,
+     "status": 200,
+     "response": {
+      "id": "cf661612-212b-4704-9fb3-6ad2187a0f1e",
+      "name": "Near driver",
+      "vehicle_type": "sedan",
+      "latitude": 12.972,
+      "longitude": 77.595,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.664290Z"
+     },
+     "note": "driver is free again"
+    }
+   ],
+   "tests": [
+    "test_booking_end_ride_and_history"
+   ]
+  },
+  {
+   "id": "coupon",
+   "title": "Coupon is locked in at booking",
+   "claim": "Code is normalised, discount is capped, and deleting the coupon after booking does not change the booked ride.",
+   "steps": [
+    {
+     "method": "POST",
+     "path": "/users",
+     "request": {
+      "name": "Asha"
+     },
+     "status": 201,
+     "response": {
+      "id": "65252baa-530b-4426-b34f-404f0e45fb6a",
+      "name": "Asha",
+      "created_at": "2026-11-26T16:19:12.681733Z"
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/drivers",
+     "request": {
+      "name": "D1",
+      "vehicle_type": "sedan",
+      "latitude": 12.9716,
+      "longitude": 77.5946
+     },
+     "status": 201,
+     "response": {
+      "id": "bce2e7c4-55d7-4a19-b768-3fffc0b67e60",
+      "name": "D1",
+      "vehicle_type": "sedan",
+      "latitude": 12.9716,
+      "longitude": 77.5946,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.683813Z"
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/coupons",
+     "request": {
+      "code": "SAVE10",
+      "discount_type": "percentage",
+      "value": 10,
+      "max_discount": 20
+     },
+     "status": 201,
+     "response": {
+      "code": "SAVE10",
+      "discount_type": "percentage",
+      "value": 10.0,
+      "max_discount": 20.0,
+      "created_at": "2026-11-26T16:19:12.686103Z"
+     },
+     "note": "10% off, capped at 20 INR"
+    },
+    {
+     "method": "POST",
+     "path": "/rides",
+     "request": {
+      "user_id": "65252baa-530b-4426-b34f-404f0e45fb6a",
+      "requested_vehicle_type": "sedan",
+      "coupon_code": "save10",
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "radius_km": 5
+     },
+     "status": 201,
+     "response": {
+      "id": "d8c7b59b-fba3-471a-af24-cc4b630e97f3",
+      "user_id": "65252baa-530b-4426-b34f-404f0e45fb6a",
+      "driver_id": "bce2e7c4-55d7-4a19-b768-3fffc0b67e60",
+      "requested_vehicle_type": "sedan",
+      "assigned_vehicle_type": "sedan",
+      "pricing_vehicle_type": "sedan",
+      "upgraded_at_no_extra_cost": false,
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "status": "ongoing",
+      "coupon_code": "SAVE10",
+      "surge_multiplier": 1.0,
+      "created_at": "2026-11-26T16:19:12.688384Z",
+      "started_at": "2026-11-26T16:19:12.688384Z",
+      "ended_at": null,
+      "cancelled_at": null,
+      "distance_km": null,
+      "base_fare": null,
+      "surge_amount": 0.0,
+      "surged_fare": null,
+      "discount_amount": null,
+      "final_fare": null,
+      "cancellation_fee": 0.0
+     },
+     "note": "book with lowercase code: normalised"
+    },
+    {
+     "method": "DELETE",
+     "path": "/coupons/SAVE10",
+     "request": null,
+     "status": 204,
+     "response": null,
+     "note": "delete the coupon after booking"
+    },
+    {
+     "method": "POST",
+     "path": "/rides/d8c7b59b-fba3-471a-af24-cc4b630e97f3/end",
+     "request": {
+      "distance_km": 8
+     },
+     "status": 200,
+     "response": {
+      "ride_id": "d8c7b59b-fba3-471a-af24-cc4b630e97f3",
+      "distance_km": 8.0,
+      "vehicle_type_priced": "sedan",
+      "base_fare": 59.0,
+      "surge_multiplier": 1.0,
+      "surge_amount": 0.0,
+      "surged_fare": 59.0,
+      "coupon_code": "SAVE10",
+      "discount_amount": 5.9,
+      "final_fare": 53.1,
+      "currency": "INR"
+     },
+     "note": "fare still honours the coupon taken at booking"
+    }
+   ],
+   "tests": [
+    "test_coupon_applies_and_coupon_delete_does_not_change_booked_ride"
+   ]
+  },
+  {
+   "id": "nodriver",
+   "title": "No driver in range",
+   "claim": "The service answers 409 instead of assigning a far-away driver.",
+   "steps": [
+    {
+     "method": "POST",
+     "path": "/users",
+     "request": {
+      "name": "Asha"
+     },
+     "status": 201,
+     "response": {
+      "id": "ee04cc71-360c-4d58-90e0-2740da224249",
+      "name": "Asha",
+      "created_at": "2026-11-26T16:19:12.701375Z"
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/drivers",
+     "request": {
+      "name": "Delhi driver",
+      "vehicle_type": "sedan",
+      "latitude": 28.6139,
+      "longitude": 77.209
+     },
+     "status": 201,
+     "response": {
+      "id": "2d4107ff-cfc8-4707-8922-1ae3aa0e2b60",
+      "name": "Delhi driver",
+      "vehicle_type": "sedan",
+      "latitude": 28.6139,
+      "longitude": 77.209,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.703531Z"
+     },
+     "note": "driver is about 1,700 km away"
+    },
+    {
+     "method": "POST",
+     "path": "/rides",
+     "request": {
+      "user_id": "ee04cc71-360c-4d58-90e0-2740da224249",
+      "requested_vehicle_type": "sedan",
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "radius_km": 1
+     },
+     "status": 409,
+     "response": {
+      "detail": "No available driver of the requested type within radius"
+     },
+     "note": "book with a 1 km radius"
+    }
+   ],
+   "tests": [
+    "test_no_driver_in_radius_returns_conflict"
+   ]
+  },
+  {
+   "id": "invalid",
+   "title": "Invalid input is rejected",
+   "claim": "Out-of-range values are refused with a 422 and a field-level message.",
+   "steps": [
+    {
+     "method": "POST",
+     "path": "/coupons",
+     "request": {
+      "code": "BAD",
+      "discount_type": "percentage",
+      "value": 150
+     },
+     "status": 422,
+     "response": {
+      "detail": [
+       {
+        "type": "value_error",
+        "loc": [
+         "body"
+        ],
+        "msg": "Value error, percentage coupon value must be between 0 and 100",
+        "input": {
+         "code": "BAD",
+         "discount_type": "percentage",
+         "value": 150
+        },
+        "ctx": {
+         "error": {}
+        }
+       }
+      ]
+     },
+     "note": "percentage over 100"
+    },
+    {
+     "method": "POST",
+     "path": "/users",
+     "request": {
+      "name": "Asha"
+     },
+     "status": 201,
+     "response": {
+      "id": "deb304b9-0e59-46c4-a792-0b4ed059b9f0",
+      "name": "Asha",
+      "created_at": "2026-11-26T16:19:12.716004Z"
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/drivers",
+     "request": {
+      "name": "D1",
+      "vehicle_type": "sedan",
+      "latitude": 12.9716,
+      "longitude": 77.5946
+     },
+     "status": 201,
+     "response": {
+      "id": "6ba06c29-5e04-4415-8e82-7616a39ee5ef",
+      "name": "D1",
+      "vehicle_type": "sedan",
+      "latitude": 12.9716,
+      "longitude": 77.5946,
+      "rating": 5.0,
+      "available": true,
+      "created_at": "2026-11-26T16:19:12.718133Z"
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/rides",
+     "request": {
+      "user_id": "deb304b9-0e59-46c4-a792-0b4ed059b9f0",
+      "requested_vehicle_type": "sedan",
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "radius_km": 5
+     },
+     "status": 201,
+     "response": {
+      "id": "dcc3dbcb-1ade-4ecb-b51b-aa6dc7147e1a",
+      "user_id": "deb304b9-0e59-46c4-a792-0b4ed059b9f0",
+      "driver_id": "6ba06c29-5e04-4415-8e82-7616a39ee5ef",
+      "requested_vehicle_type": "sedan",
+      "assigned_vehicle_type": "sedan",
+      "pricing_vehicle_type": "sedan",
+      "upgraded_at_no_extra_cost": false,
+      "pickup_latitude": 12.9716,
+      "pickup_longitude": 77.5946,
+      "status": "ongoing",
+      "coupon_code": null,
+      "surge_multiplier": 1.0,
+      "created_at": "2026-11-26T16:19:12.720798Z",
+      "started_at": "2026-11-26T16:19:12.720798Z",
+      "ended_at": null,
+      "cancelled_at": null,
+      "distance_km": null,
+      "base_fare": null,
+      "surge_amount": 0.0,
+      "surged_fare": null,
+      "discount_amount": null,
+      "final_fare": null,
+      "cancellation_fee": 0.0
+     },
+     "note": ""
+    },
+    {
+     "method": "POST",
+     "path": "/rides/dcc3dbcb-1ade-4ecb-b51b-aa6dc7147e1a/end",
+     "request": {
+      "distance_km": -5
+     },
+     "status": 422,
+     "response": {
+      "detail": [
+       {
+        "type": "greater_than",
+        "loc": [
+         "body",
+         "distance_km"
+        ],
+        "msg": "Input should be greater than 0",
+        "input": -5,
+        "ctx": {
+         "gt": 0.0
+        }
+       }
+      ]
+     },
+     "note": "negative distance"
+    }
+   ],
+   "tests": [
+    "test_invalid_coupon_is_rejected",
+    "test_negative_distance_is_rejected"
+   ]
+  }
+ ],
+ "race": {
+  "riders": 8,
+  "drivers": 1,
+  "runs": [
+   {
+    "created": 1,
+    "conflict": 7,
+    "other": 0
+   },
+   {
+    "created": 1,
+    "conflict": 7,
+    "other": 0
+   },
+   {
+    "created": 1,
+    "conflict": 7,
+    "other": 0
+   },
+   {
+    "created": 1,
+    "conflict": 7,
+    "other": 0
+   },
+   {
+    "created": 1,
+    "conflict": 7,
+    "other": 0
+   }
+  ],
+  "claim": "Eight riders request the only free driver at the same moment. Exactly one booking succeeds each time.",
+  "tests": [
+   "test_concurrent_booking_does_not_assign_one_driver_twice"
+  ]
+ },
+ "fares": {
+  "sedan": [
+   [
+    0.5,
+    50.0
+   ],
+   [
+    1.0,
+    50.0
+   ],
+   [
+    1.5,
+    50.0
+   ],
+   [
+    2.0,
+    50.0
+   ],
+   [
+    2.5,
+    50.0
+   ],
+   [
+    3.0,
+    50.0
+   ],
+   [
+    3.5,
+    50.0
+   ],
+   [
+    4.0,
+    50.0
+   ],
+   [
+    4.5,
+    50.0
+   ],
+   [
+    5.0,
+    50.0
+   ],
+   [
+    5.5,
+    50.0
+   ],
+   [
+    6.0,
+    50.0
+   ],
+   [
+    6.5,
+    51.5
+   ],
+   [
+    7.0,
+    54.0
+   ],
+   [
+    7.5,
+    56.5
+   ],
+   [
+    8.0,
+    59.0
+   ],
+   [
+    8.5,
+    61.5
+   ],
+   [
+    9.0,
+    64.0
+   ],
+   [
+    9.5,
+    66.5
+   ],
+   [
+    10.0,
+    69.0
+   ],
+   [
+    10.5,
+    71.5
+   ],
+   [
+    11.0,
+    74.0
+   ],
+   [
+    11.5,
+    76.5
+   ],
+   [
+    12.0,
+    79.0
+   ],
+   [
+    12.5,
+    81.5
+   ],
+   [
+    13.0,
+    84.0
+   ],
+   [
+    13.5,
+    86.5
+   ],
+   [
+    14.0,
+    89.0
+   ],
+   [
+    14.5,
+    91.5
+   ],
+   [
+    15.0,
+    94.0
+   ],
+   [
+    15.5,
+    96.5
+   ],
+   [
+    16.0,
+    99.0
+   ],
+   [
+    16.5,
+    101.5
+   ],
+   [
+    17.0,
+    104.0
+   ],
+   [
+    17.5,
+    106.5
+   ],
+   [
+    18.0,
+    109.0
+   ],
+   [
+    18.5,
+    111.5
+   ],
+   [
+    19.0,
+    114.0
+   ],
+   [
+    19.5,
+    116.5
+   ],
+   [
+    20.0,
+    119.0
+   ],
+   [
+    20.5,
+    121.5
+   ],
+   [
+    21.0,
+    124.0
+   ],
+   [
+    21.5,
+    126.5
+   ],
+   [
+    22.0,
+    129.0
+   ],
+   [
+    22.5,
+    131.5
+   ],
+   [
+    23.0,
+    134.0
+   ],
+   [
+    23.5,
+    136.5
+   ],
+   [
+    24.0,
+    139.0
+   ],
+   [
+    24.5,
+    141.5
+   ],
+   [
+    25.0,
+    144.0
+   ],
+   [
+    25.5,
+    146.5
+   ],
+   [
+    26.0,
+    149.0
+   ],
+   [
+    26.5,
+    151.5
+   ],
+   [
+    27.0,
+    154.0
+   ],
+   [
+    27.5,
+    156.5
+   ],
+   [
+    28.0,
+    159.0
+   ],
+   [
+    28.5,
+    161.5
+   ],
+   [
+    29.0,
+    164.0
+   ],
+   [
+    29.5,
+    166.5
+   ],
+   [
+    30.0,
+    169.0
+   ]
+  ],
+  "hatchback": [
+   [
+    0.5,
+    40.0
+   ],
+   [
+    1.0,
+    40.0
+   ],
+   [
+    1.5,
+    40.0
+   ],
+   [
+    2.0,
+    40.0
+   ],
+   [
+    2.5,
+    40.0
+   ],
+   [
+    3.0,
+    40.0
+   ],
+   [
+    3.5,
+    40.0
+   ],
+   [
+    4.0,
+    40.0
+   ],
+   [
+    4.5,
+    40.0
+   ],
+   [
+    5.0,
+    40.0
+   ],
+   [
+    5.5,
+    40.0
+   ],
+   [
+    6.0,
+    40.0
+   ],
+   [
+    6.5,
+    40.0
+   ],
+   [
+    7.0,
+    42.0
+   ],
+   [
+    7.5,
+    44.0
+   ],
+   [
+    8.0,
+    46.0
+   ],
+   [
+    8.5,
+    48.0
+   ],
+   [
+    9.0,
+    50.0
+   ],
+   [
+    9.5,
+    52.0
+   ],
+   [
+    10.0,
+    54.0
+   ],
+   [
+    10.5,
+    56.0
+   ],
+   [
+    11.0,
+    58.0
+   ],
+   [
+    11.5,
+    60.0
+   ],
+   [
+    12.0,
+    62.0
+   ],
+   [
+    12.5,
+    64.0
+   ],
+   [
+    13.0,
+    66.0
+   ],
+   [
+    13.5,
+    68.0
+   ],
+   [
+    14.0,
+    70.0
+   ],
+   [
+    14.5,
+    72.0
+   ],
+   [
+    15.0,
+    74.0
+   ],
+   [
+    15.5,
+    76.0
+   ],
+   [
+    16.0,
+    78.0
+   ],
+   [
+    16.5,
+    80.0
+   ],
+   [
+    17.0,
+    82.0
+   ],
+   [
+    17.5,
+    84.0
+   ],
+   [
+    18.0,
+    86.0
+   ],
+   [
+    18.5,
+    88.0
+   ],
+   [
+    19.0,
+    90.0
+   ],
+   [
+    19.5,
+    92.0
+   ],
+   [
+    20.0,
+    94.0
+   ],
+   [
+    20.5,
+    96.0
+   ],
+   [
+    21.0,
+    98.0
+   ],
+   [
+    21.5,
+    100.0
+   ],
+   [
+    22.0,
+    102.0
+   ],
+   [
+    22.5,
+    104.0
+   ],
+   [
+    23.0,
+    106.0
+   ],
+   [
+    23.5,
+    108.0
+   ],
+   [
+    24.0,
+    110.0
+   ],
+   [
+    24.5,
+    112.0
+   ],
+   [
+    25.0,
+    114.0
+   ],
+   [
+    25.5,
+    116.0
+   ],
+   [
+    26.0,
+    118.0
+   ],
+   [
+    26.5,
+    120.0
+   ],
+   [
+    27.0,
+    122.0
+   ],
+   [
+    27.5,
+    124.0
+   ],
+   [
+    28.0,
+    126.0
+   ],
+   [
+    28.5,
+    128.0
+   ],
+   [
+    29.0,
+    130.0
+   ],
+   [
+    29.5,
+    132.0
+   ],
+   [
+    30.0,
+    134.0
+   ]
+  ]
+ },
+ "cancel_policy": "free for 120 s, then 30.00 INR (CancellationFeePolicy defaults)",
+ "test_names": [
+  "test_booking_end_ride_and_history",
+  "test_hatchback_request_upgrades_to_sedan_without_extra_cost",
+  "test_no_driver_in_radius_returns_conflict",
+  "test_coupon_applies_and_coupon_delete_does_not_change_booked_ride",
+  "test_invalid_coupon_is_rejected",
+  "test_cannot_end_ride_twice",
+  "test_concurrent_booking_does_not_assign_one_driver_twice",
+  "test_highest_rated_matching_is_configurable",
+  "test_nearest_matching_remains_selectable",
+  "test_demand_supply_surge_is_snapshotted_and_applied_to_fare",
+  "test_surge_tiers_respond_to_demand_supply_pressure",
+  "test_free_cancellation_releases_driver_and_records_history",
+  "test_late_cancellation_fee_applies_and_driver_becomes_available",
+  "test_cancel_cannot_be_applied_twice_and_cancelled_is_terminal",
+  "test_cannot_cancel_completed_ride",
+  "test_environment_variable_switches_matching_strategy",
+  "test_driver_location_can_be_updated",
+  "test_invalid_matching_strategy_fails_fast",
+  "test_cancelled_status_is_an_enum_member",
+  "test_custom_fare_strategy_is_injected_without_changing_booking_logic",
+  "test_sedan_minimum_fare_applies_to_short_trip",
+  "test_sedan_progressive_tiers_are_applied",
+  "test_hatchback_has_a_different_rate_card",
+  "test_percentage_coupon_respects_cap",
+  "test_fixed_coupon_never_exceeds_fare",
+  "test_negative_distance_is_rejected",
+  "test_pricing_strategy_supports_custom_rate_cards",
+  "test_pricing_strategy_rejects_vehicle_without_a_rate_card"
+ ],
+ "pytest_summary": "28 passed in 0.48s",
+ "commit": "3c42469"
+};
+const REPO="https://github.com/AloneRider-pixel/ride-hailing-backend/blob/"+D.commit+"/";
+const SRC={happy:[["app/service.py#L175","book_ride"],["app/service.py#L244","end_ride"],["app/pricing.py#L48","tiered fare"]],
+coupon:[["app/schemas.py#L84","CouponCreate"],["app/service.py#L175","book_ride"],["app/pricing.py#L75","calculate_discount"]],
+nodriver:[["app/service.py#L175","book_ride"]],invalid:[["app/schemas.py#L84","CouponCreate validators"],["app/schemas.py#L126","EndRideRequest"]],
+race:[["app/store.py#L20","RLock in the store"],["app/service.py#L175","book_ride (read-check-write)"]]};
+const TF={happy:"tests/test_api.py",coupon:"tests/test_api.py",nodriver:"tests/test_api.py",invalid:"tests/test_api.py",race:"tests/test_api.py"};
+const META=[["happy","Book and finish a ride","nearest driver, tiered fare"],["coupon","Coupon is locked in at booking","delete it afterwards"],["nodriver","No driver nearby","what if nobody is in range"],["invalid","Send bad input","coupon over 100%, negative distance",1],["race","Race: 8 riders, 1 driver","everyone books at the same instant",1]];
+document.getElementById("prov").textContent="recorded from the real code at commit "+D.commit+" · "+D.pytest_summary+" · replayed, not live";
+const ctrl=document.getElementById("ctrl"),out=document.getElementById("out");
+META.forEach(([id,t,s,d])=>{const b=document.createElement("button");b.className="sc"+(d?" danger":"");b.innerHTML="<b>"+t+"</b><span>"+s+"</span>";b.onclick=()=>run(id,b);ctrl.appendChild(b)});
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const SK=new Set(["id","status","driver_id","user_id","assigned_vehicle_type","pricing_vehicle_type","coupon_code","surge_multiplier","distance_km","base_fare","discount_amount","final_fare","available","detail","msg","loc","name","vehicle_type","code","type"]);
+const clean=o=>Array.isArray(o)?o.map(clean):(o&&typeof o==="object")?Object.fromEntries(Object.entries(o).filter(([k,v])=>SK.has(k)&&v!==null).map(([k,v])=>[k,k==="id"||k.endsWith("_id")?String(v).slice(0,8)+"…":clean(v)])):o;
+const short=o=>JSON.stringify(clean(o),null,1);
+let tok=0;
+function show(id){const w=document.getElementById("why");w.hidden=false;
+ const sc=D.scenarios.find(x=>x.id===id);const claim=id==="race"?D.race.claim:sc.claim;
+ document.getElementById("claim").textContent=claim;
+ const tests=id==="race"?D.race.tests:sc.tests;
+ document.getElementById("src").innerHTML=SRC[id].map(([p,l])=>'<div><a href="'+REPO+p+'">'+l+' ↗</a></div>').join("");
+ document.getElementById("tests").innerHTML=tests.map(t=>"<li>"+t+"</li>").join("")||'<li style="color:var(--faint)">covered by validation models, shown above</li>';
+ const r=document.getElementById("race");r.innerHTML="";document.getElementById("racenote").textContent="";
+ if(id==="race"){let k=0;const R=D.race;
+  const draw=()=>{const run=R.runs[k%R.runs.length];r.innerHTML="";const win=Math.floor(Math.random()*R.riders);
+   for(let i=0;i<R.riders;i++){const d=document.createElement("div");d.className="rd";d.textContent="R"+(i+1);r.appendChild(d)}
+   setTimeout(()=>{[...r.children].forEach((d,i)=>d.classList.add(i===win?"win":"lose"))},350);
+   document.getElementById("racenote").textContent="run "+(k%R.runs.length+1)+" of "+R.runs.length+": "+run.created+" booking created (201), "+run.conflict+" refused (409), driver assigned once. Which rider wins varies, so the highlighted rider here is illustrative.";k++};
+  draw();const t=tok;const iv=setInterval(()=>{if(t!==tok||k>=R.runs.length){clearInterval(iv);return}draw()},1800)}}
+function run(id,btn){tok++;const my=tok;document.querySelectorAll(".sc").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
+ out.innerHTML="";document.getElementById("tt").textContent="replay · "+id;
+ if(id==="race"){const R=D.race;out.innerHTML='<div class="ln"><div class="req">→ 8 × POST /rides  (8 threads, one free driver)</div></div>'+R.runs.map((x,i)=>'<div class="ln"><div class="res"><span class="note">run '+(i+1)+'</span>  <span class="s2">'+x.created+'× 201</span>  <span class="s4">'+x.conflict+'× 409</span>  other: '+x.other+'</div></div>').join("");show(id);return}
+ const sc=D.scenarios.find(x=>x.id===id);let i=0;
+ const step=()=>{if(my!==tok)return;if(i>=sc.steps.length){show(id);return}const s=sc.steps[i++];
+  const d=document.createElement("div");d.className="ln";
+  const cls=s.status<300?"s2":"s4";
+  d.innerHTML='<div class="req">→ '+s.method+' '+esc(s.path)+(s.request?'  '+esc(JSON.stringify(s.request)):'')+'</div>'+(s.note?'<div class="note"># '+esc(s.note)+'</div>':'')+'<div class="res"><span class="'+cls+'">← '+s.status+'</span><pre>'+esc(short(s.response))+'</pre></div>';
+  out.appendChild(d);out.scrollTop=out.scrollHeight;setTimeout(step,450)};
+ step()}
+let veh="sedan";
+function fare(){const km=parseFloat(document.getElementById("km").value);const row=D.fares[veh].find(r=>r[0]===km);
+ document.getElementById("kml").textContent=km.toFixed(1)+" km";document.getElementById("fv").textContent="₹"+row[1].toFixed(2)}
+document.getElementById("km").oninput=fare;
+document.querySelectorAll("#seg button").forEach(b=>b.onclick=()=>{veh=b.dataset.v;document.querySelectorAll("#seg button").forEach(x=>x.classList.toggle("on",x===b));fare()});
+fare();
+const h=location.hash.match(/run=(\w+)/);if(h){const i=META.findIndex(m=>m[0]===h[1]);if(i>=0)document.querySelectorAll('.sc')[i].click()}
+</script></body></html>
