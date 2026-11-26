@@ -36,11 +36,11 @@ h1 i{color:var(--bad);font-style:italic;font-weight:500}
 .req{color:var(--acc);word-break:break-all}.res{margin-top:2px}.s2{color:var(--ok)}.s4{color:var(--bad)}.note{color:var(--faint)}
 pre{white-space:pre-wrap;word-break:break-word;color:var(--mid);font:inherit}
 .empty{color:var(--faint)}
-.why{margin-top:20px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+.why{margin-top:20px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:20px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
 .card p{color:var(--mid);font-size:15px}
 .tests{list-style:none;margin-top:8px}
-.tests li{font:12.5px ui-monospace,Menlo,monospace;color:var(--mid);padding:3px 0}
+.tests li{font:12.5px ui-monospace,Menlo,monospace;color:var(--mid);padding:3px 0;overflow-wrap:anywhere}
 .tests li::before{content:"✓ ";color:var(--ok)}
 .src a{font:12.5px ui-monospace,Menlo,monospace}
 .race{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
@@ -59,7 +59,7 @@ footer{margin:46px 0 40px;padding-top:22px;border-top:1px solid var(--line);disp
 footer a{color:var(--mid)}
 .cta a{display:inline-block;margin:14px 10px 0 0;padding:10px 16px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font:12.5px ui-monospace,Menlo,monospace}
 .cta a.p{background:var(--ink);color:var(--bg)}
-@media(max-width:860px){.lab,.why{grid-template-columns:1fr}.ctrl{flex-direction:row;flex-wrap:wrap}.ctrl h2{flex:1 0 100%}.sc{flex:1 1 44%}}
+@media(max-width:860px){.lab,.why{grid-template-columns:minmax(0,1fr)}.ctrl{flex-direction:row;flex-wrap:wrap}.ctrl h2{flex:1 0 100%}.sc{flex:1 1 44%}}
 @media(prefers-reduced-motion:reduce){.ln{animation:none}.rd{transition:none}}
 </style></head><body>
 <div class="wrap">
